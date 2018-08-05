@@ -1,0 +1,281 @@
+Make(delphi)
+ver(4.05 build 186)
+Add(MainForm,2953706,154,525)
+{
+ Width=588
+ Height=299
+ Caption="AriadneUpload"
+ Point(onClose)
+ link(onCreate,13233051:doEvent1,[])
+ link(onClose,12972575:doEvent1,[(205,552)(205,615)])
+}
+Add(Menu,5134274,434,98)
+{
+ Menu=#5:About|
+}
+Add(ODialog,4898550,385,413)
+{
+ Filter="Firmware files|*.hex|All files|*.*"
+ Point(FileName)
+ link(onExecute,13476434:doEvent1,[])
+ link(FileName,15817669:Var,[])
+}
+Add(Button,3188826,322,413)
+{
+ Left=490
+ Top=44
+ Width=30
+ Height=22
+ Caption="..."
+ link(onClick,4898550:doExecute,[])
+}
+Add(Edit,11977679,504,469)
+{
+ Left=25
+ Top=45
+ Width=465
+ Alignment=1
+ link(Str,6697017:Var,[])
+}
+Add(Label,3246181,532,56)
+{
+ Left=25
+ Top=20
+ Width=87
+ Height=17
+ Caption="Firmware HEX file"
+}
+Add(Label,7318841,574,56)
+{
+ Left=25
+ Top=85
+ Width=91
+ Height=17
+ Caption="Device IP address"
+}
+Add(Edit,2718416,504,567)
+{
+ Left=25
+ Top=105
+ Width=160
+ link(onChange,12742554:doValue,[(548,573)(548,555)(492,555)(492,538)])
+ link(Str,12742554:Var,[])
+}
+Add(Button,1564133,651,546)
+{
+ Left=25
+ Top=195
+ Width=195
+ Height=40
+ Caption="UPLOAD"
+ link(onClick,762968:doMessage,[])
+}
+Add(Hub,13233051,224,539)
+{
+ OutCount=5
+ link(onEvent1,991534:doLoad,[])
+}
+Add(GVarContainer,991534,308,539)
+{
+ FileName="settings.ini"
+ VarList=#4:file|7:address|4:port|0:|
+ link(onLoad,4572592:doEvent1,[])
+}
+Add(Hub,12972575,224,609)
+{
+ link(onEvent1,991534:doSave,[(273,615)(273,552)])
+}
+Add(GlobalVar,6697017,504,427)
+{
+ Name="file"
+}
+Add(Hub,4572592,364,539)
+{
+ OutCount=5
+ link(onEvent1,16560129:doWork2,[(420,545)(420,482)])
+ link(onEvent2,2718416:doText,[(441,552)(441,573)])
+}
+Add(GlobalVar,15817669,385,371)
+{
+ Name="file"
+}
+Add(HubEx,16560129,462,476)
+{
+ link(onEvent,11977679:doText,[(486,482)(486,475)])
+}
+Add(Hub,13476434,427,413)
+{
+ link(onEvent1,15817669:doValue,[(453,419)(453,398)(373,398)(373,377)])
+ link(onEvent2,16560129:doWork3,[(466,426)])
+}
+Add(GlobalVar,12742554,504,532)
+{
+ Name="address"
+}
+Add(Button,14896054,329,175)
+{
+ Left=670
+ Top=110
+ Width=120
+ Height=25
+ Caption="Advanced settings..."
+ Data=Integer(1)
+ link(onClick,13116253:doWork1,[(394,181)(394,174)])
+}
+Add(ChildForm,13116253,427,168)
+{
+}
+BEGIN_SDK
+  Add(EditMulti,11885610,21,21)
+  {
+   WorkCount=1
+   link(doWork1,3600255:doVisible,[(98,27)(98,97)])
+  }
+  Add(MainForm,3600255,175,63)
+  {
+   Left=35
+   Top=105
+   Width=631
+   Height=530
+   Visible=1
+   Point(doVisible)
+  }
+  Add(Label,5478070,487,81)
+  {
+   Left=25
+   Top=30
+   Width=107
+   Height=17
+   Caption="TFTP negotiation port"
+  }
+  Add(Edit,8001417,487,270)
+  {
+   Left=25
+   Top=50
+   Width=80
+   Enabled=1
+   Text=""
+  }
+  Add(Label,470028,481,75)
+  {
+   Left=25
+   Top=90
+   Width=76
+   Height=17
+   Caption="TFTP data port"
+  }
+  Add(Edit,5960846,481,194)
+  {
+   Left=25
+   Top=110
+   Width=80
+   Enabled=1
+  }
+  Add(Label,10030703,35,168)
+  {
+   Left=30
+   Top=170
+   Width=74
+   Height=17
+   Caption="Web interface:"
+  }
+  Add(Label,9893189,35,238)
+  {
+   Left=30
+   Top=195
+   Width=55
+   Height=17
+   Caption="User name"
+  }
+END_SDK
+Add(Hub,16488670,798,546)
+{
+ OutCount=3
+ link(onEvent1,2278221:doString,[(854,552)(854,433)])
+ link(onEvent2,8698488:doData,[])
+}
+Add(WinExec,16547648,1001,455)
+{
+ Mode=0
+ RunEvent=1
+ Point(onConsoleResult)
+ Point(onConsoleError)
+ Point(doConsoleExec)
+ Point(onConsoleTerminate)
+}
+Add(FormatStr,2278221,896,427)
+{
+ Mask="avr-objcopy -I ihex "%1" -O binary "firmware.bin""
+ link(onFString,14440197:doEvent1,[])
+ link(Str1,13466693:Var,[])
+}
+Add(GlobalVar,13466693,896,371)
+{
+ Name="file"
+}
+Add(Memo,4776096,812,182)
+{
+ Left=655
+ Top=200
+ Width=360
+ Height=220
+}
+Add(Message,7261178,1106,567)
+{
+ Message="Error- file not created"
+}
+Add(FileTools,16408499,1078,385)
+{
+ DelToRecycle=1
+}
+Add(Hub,14440197,938,427)
+{
+ link(onEvent1,14384414:doData,[(980,433)(980,412)])
+ link(onEvent2,16547648:doExec,[(980,440)(980,461)])
+}
+Add(DoData,14384414,1001,406)
+{
+ Data=String(firmware.bin)
+ link(onEventData,16408499:doDelete,[(1055,412)(1055,405)])
+}
+Add(FileTools,7375922,966,532)
+{
+ DelToRecycle=1
+ link(onEnd,14524490:doCase,[])
+}
+Add(DoData,8698488,889,553)
+{
+ Data=String(firmware.bin)
+ link(onEventData,7375922:doFileExists,[])
+}
+Add(Case,14524490,1029,532)
+{
+ Value=Integer(0)
+ link(onNextCase,3270056:doString,[])
+ link(onTrue,7261178:doMessage,[(1083,545)(1083,573)])
+}
+Add(FormatStr,3270056,1190,532)
+{
+ Mask="TFTPClient.exe -i %1 PUT firmware.bin\r\n"
+ link(onFString,2035007:doExec,[])
+ link(Str1,3226064:Var,[])
+}
+Add(GlobalVar,3226064,1190,490)
+{
+ Name="address"
+}
+Add(WinExec,2035007,1295,532)
+{
+ Mode=5
+ Point(onConsoleResult)
+ Point(onConsoleError)
+ Point(doConsoleExec)
+ Point(onConsoleTerminate)
+ Point(doConsoleInput)
+}
+Add(Message,762968,721,546)
+{
+ Message="Reset the device manually or from web interface!"
+ Point(onOK)
+ link(onOK,16488670:doEvent1,[(783,559)(783,552)])
+}
